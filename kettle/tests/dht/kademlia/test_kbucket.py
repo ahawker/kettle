@@ -2,7 +2,7 @@ __author__ = 'ahawker'
 
 from kettle.tests.structures import KettleTest
 from kettle.tests.dht.kademlia.test_nodes import default_node
-from kettle.dht.kademlia.kbucket import KBucket, KBucketOverflow
+from kettle.dht.kademlia.kbucket import KBucket
 
 class TestKBucket(KettleTest):
 
@@ -29,15 +29,33 @@ class TestKBucket(KettleTest):
         self.bucket.add(default_node)
         self.assertTrue(default_node in self.bucket)
 
+    def test_contains_cache(self):
+        b = KBucket(1)
+        b.add(None)
+        b.add(default_node)
+        self.assertTrue(default_node in b)
+
     def test_len(self):
         self.assertEqual(len(self.bucket), 0)
         self.bucket.add(default_node)
         self.assertEqual(len(self.bucket), 1)
 
+    def test_len_cache(self):
+        b = KBucket(1)
+        b.add(None)
+        b.add(default_node)
+        self.assertEqual(len(b), 2)
+
     def test_iter(self):
         self.assertItemsEqual(self.bucket, [])
         self.bucket.add(default_node)
         self.assertItemsEqual(self.bucket, [default_node])
+
+    def test_iter_cache(self):
+        b = KBucket(1)
+        b.add(None)
+        b.add(default_node)
+        self.assertItemsEqual(b, [None, default_node])
 
     def test_add(self):
         self.bucket.add(default_node)
@@ -46,14 +64,35 @@ class TestKBucket(KettleTest):
 
     def test_add_overflow(self):
         b = KBucket(1)
+        b.add(None)
         b.add(default_node)
-        self.assertRaises(KBucketOverflow, b.add, default_node)
+        self.assertEquals(len(b), 2)
+        self.assertTrue(b.is_bucket_full)
+        self.assertEquals(len(b.cache), 1)
+        self.assertEquals(len(b.bucket), 1)
+
+    def test_add_cache_overflow(self):
+        b = KBucket(1)
+        b.add(None)
+        b.add(default_node)
+        b.add(default_node)
+        self.assertEquals(len(b), 2)
+        self.assertTrue(b.is_cache_full)
+        self.assertEquals(len(b.cache), 1)
+        self.assertEquals(len(b.bucket), 1)
 
     def test_add_existing_item(self):
         self.bucket.add(default_node)
         self.bucket.add(default_node)
         self.assertEqual(len(self.bucket), 1)
         self.assertTrue(default_node in self.bucket)
+
+    def test_add_cache_existing_item(self):
+        b = KBucket(1)
+        b.add(None)
+        b.add(default_node)
+        b.add(default_node)
+        self.assertEqual(len(b), 2)
 
     def test_remove(self):
         self.bucket.add(default_node)
@@ -63,9 +102,23 @@ class TestKBucket(KettleTest):
         self.assertEqual(len(self.bucket), 0)
         self.assertFalse(default_node in self.bucket)
 
+    def test_cache_remove(self):
+        b = KBucket(1)
+        b.add(None)
+        b.add(default_node)
+        self.assertEqual(len(b), 2)
+        b.remove(default_node)
+        self.assertEqual(len(b), 1)
+
     def test_is_full(self):
         b = KBucket(1)
-        self.assertFalse(b.is_full)
+        self.assertFalse(b.is_bucket_full)
         b.add(default_node)
-        self.assertTrue(b.is_full)
+        self.assertTrue(b.is_bucket_full)
+
+    def test_is_cache_full(self):
+        b = KBucket(1)
+        b.add(None)
+        b.add(default_node)
+        self.assertTrue(b.is_cache_full)
 
