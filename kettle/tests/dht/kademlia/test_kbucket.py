@@ -1,7 +1,7 @@
 __author__ = 'ahawker'
 
-from tests.structures import KettleTest
-from test_nodes import default_node
+from kettle.tests.structures import KettleTest
+from kettle.tests.dht.kademlia.test_nodes import default_node
 from kettle.dht.kademlia.kbucket import KBucket, KBucketOverflow
 
 class TestKBucket(KettleTest):
@@ -11,14 +11,10 @@ class TestKBucket(KettleTest):
 
     def test_default_attributes(self):
         self.assertEqual(self.bucket.k, 20)
-        self.assertEqual(self.bucket.min, 0)
-        self.assertEqual(self.bucket.max, 2**160)
 
     def test_attribute_assignment(self):
-        b = KBucket(1, (2, 3))
+        b = KBucket(1)
         self.assertEqual(b.k, 1)
-        self.assertEqual(b.min, 2)
-        self.assertEqual(b.max, 3)
 
     def test_repr(self):
         self.assertIsNotNone(repr(self.bucket))
@@ -72,11 +68,4 @@ class TestKBucket(KettleTest):
         self.assertFalse(b.is_full)
         b.add(default_node)
         self.assertTrue(b.is_full)
-
-    def test_key_in_range(self):
-        self.assertFalse(self.bucket.key_in_range(-1))
-        self.assertTrue(self.bucket.key_in_range(0))
-        self.assertTrue(self.bucket.key_in_range(1))
-        self.assertTrue(self.bucket.key_in_range(2**160))
-        self.assertFalse(self.bucket.key_in_range((2**160) + 1))
 

@@ -1,16 +1,18 @@
 __author__ = 'ahawker'
 
-from tests.structures import KettleTest
+from kettle.tests.structures import KettleTest
 from kettle.dht.kademlia.nodes import Node
 
 default_address = '127.0.0.1'
 default_port = 9995
 default_id = 0
 
+default_node = Node(default_address, default_port, default_id)
+
 class TestNode(KettleTest):
 
     def setUp(self):
-        self.node = Node(default_address, default_port, default_id)
+        self.node = default_node
 
     def test_attribute_assignment(self):
         self.assertEquals(self.node.address, default_address)
@@ -20,7 +22,6 @@ class TestNode(KettleTest):
     def test_id_generation(self):
         n = Node(default_address, default_port)
         self.assertTrue(n > 0)
-        self.assertEqual(len(str(n.nid)), 20)
 
     def test_repr(self):
         self.assertIsNotNone(repr(self.node))
@@ -83,6 +84,23 @@ class TestNode(KettleTest):
         self.assertEqual(n ^ 2, n.distance(2))
         self.assertEqual(n ^ 3, n.distance(3))
 
+    def test_get_distance_bit(self):
+        n1 = Node(default_address, default_port, 0x01)
+        n2 = Node(default_address, default_port, 0x88)
+        n3 = Node(default_address, default_port, 0x1000)
+        self.assertEqual(self.node.get_distance_bit(n1), 0)
+        self.assertEqual(self.node.get_distance_bit(n2), 3)
+        self.assertEqual(self.node.get_distance_bit(n3), 12)
+
+    def test_get_distance_bit_negative(self):
+        n1 = Node(default_address, default_port, -1)
+        n2 = Node(default_address, default_port, 1)
+        self.assertRaises(ValueError, n1.get_distance_bit, n2)
+
+    def test_get_distance_bit_equal(self):
+        n1 = Node(default_address, default_port, 0)
+        self.assertEqual(self.node.get_distance_bit(n1), None)
+
     def test_to_dict(self):
         d = self.node.to_dict()
         keys = ['address', 'port', 'id']
@@ -97,4 +115,3 @@ class TestNode(KettleTest):
         values = [default_address, default_port, default_id]
         self.assertEqual(len(set(keys) - set(json.loads(str(j)).keys())), 0)
         self.assertEqual(len(set(values) - set(json.loads(str(j)).values())), 0)
-
