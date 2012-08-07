@@ -89,7 +89,7 @@ class TestNode(KettleTest):
         n2 = Node(default_address, default_port, 0x88)
         n3 = Node(default_address, default_port, 0x1000)
         self.assertEqual(self.node.get_distance_bit(n1), 0)
-        self.assertEqual(self.node.get_distance_bit(n2), 3)
+        self.assertEqual(self.node.get_distance_bit(n2), 7)
         self.assertEqual(self.node.get_distance_bit(n3), 12)
 
     def test_get_distance_bit_negative(self):
