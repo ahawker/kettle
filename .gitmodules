@@ -1,6 +1,3 @@
-[submodule "greenlet"]
-	path = greenlet
-	url = https://github.com/python-greenlet/greenlet.git
 [submodule "gevent"]
 	path = gevent
 	url = https://github.com/SiteSupport/gevent.git
