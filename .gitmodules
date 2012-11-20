@@ -4,3 +4,6 @@
 [submodule "libevent"]
 	path = libevent
 	url = https://github.com/libevent/libevent.git
+[submodule "greenlet"]
+	path = greenlet
+	url = https://github.com/python-greenlet/greenlet.git
