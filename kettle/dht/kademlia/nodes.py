@@ -1,67 +1,66 @@
-__author__ = 'ahawker'
-
-import hashlib
 import json
 import math
-import random
 import time
+from kettle.dht.kademlia.client import Client
+from kettle.dht.kademlia.server import Server
+from kettle.dht.kademlia.identifier import unique_identifier
+
+__author__ = 'ahawker'
 
 class Node(object):
-    def __init__(self, address, port, nid=None):
+    def __init__(self, address='127.0.0.1', port=9090, id=None):
         self.address = address
         self.port = port
-        if nid is None:
-            nid = int(hashlib.sha1(str(random.getrandbits(160))).hexdigest(), 16)
-        self.nid = nid
+        self.id = id if id is not None else unique_identifier() #0 is valid
 
     def __repr__(self):
-        return '<Node: ({0}:{1}) {2}>'.format(self.address, self.port, self.nid)
+        return '<Node: ({0}:{1}) {2}>'.format(self.address, self.port, self.id)
 
     def __str__(self):
         return '{0}:{1}'.format(self.address, self.port)
 
     def __lt__(self, other):
         if isinstance(other, Node):
-            return self.nid < other.nid
-        return self.nid < other
+            return self.id < other.id
+        return self.id < other
 
     def __le__(self, other):
         if isinstance(other, Node):
-            return self.nid <= other.nid
-        return self.nid <= other
+            return self.id <= other.id
+        return self.id <= other
 
     def __gt__(self, other):
         if isinstance(other, Node):
-            return self.nid > other.nid
-        return self.nid > other
+            return self.id > other.id
+        return self.id > other
 
     def __ge__(self, other):
         if isinstance(other, Node):
-            return self.nid >= other.nid
-        return self.nid >= other
+            return self.id >= other.id
+        return self.id >= other
 
     def __eq__(self, other):
         if isinstance(other, Node):
-            return self.nid == other.nid
-        return self.nid == other
+            return self.id == other.id
+        return self.id == other
 
     def __ne__(self, other):
         if isinstance(other, Node):
-            return self.nid != other.nid
-        return self.nid != other
+            return self.id != other.id
+        return self.id != other
 
     def __cmp__(self, other):
         if isinstance(other, Node):
-            return cmp(self.nid, other.nid)
-        return cmp(self.nid, other)
+            return cmp(self.id, other.id)
+        return cmp(self.id, other)
 
     def __xor__(self, other):
         if isinstance(other, Node):
-            return self.nid ^ other.nid
-        return self.nid ^ other
+            return self.id ^ other.id
+        return self.id ^ other
 
     def __hash__(self):
-        return self.nid
+        return self.id
 
     def distance(self, other):
         return self ^ other
@@ -75,16 +74,18 @@ class Node(object):
         return int(math.log(distance, 2))
 
     def to_dict(self):
-        return { 'id' : self.nid, 'address' : self.address, 'port' : self.port }
+        return { 'id' : self.id, 'address' : self.address, 'port' : self.port }
 
     def to_json(self):
         return json.dumps(self.to_dict())
 
+    def to_tuple(self):
+        return self.address, self.port, self.id
 
-class LocalNode(Node):
+
+class LocalNode(Node, Client, Server):
     def __init__(self, *args, **kwargs):
         super(LocalNode, self).__init__(*args, **kwargs)
-
 
 class RemoteNode(Node):
     def __init__(self, *args, **kwargs):

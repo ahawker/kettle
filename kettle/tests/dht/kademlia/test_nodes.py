@@ -17,7 +17,7 @@ class TestNode(KettleTest):
     def test_attribute_assignment(self):
         self.assertEquals(self.node.address, default_address)
         self.assertEquals(self.node.port, default_port)
-        self.assertEquals(self.node, default_id)
+        self.assertEquals(self.node.id, default_id)
 
     def test_id_generation(self):
         n = Node(default_address, default_port)
