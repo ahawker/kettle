@@ -1,0 +1,3 @@
+[submodule ".\\kettle\\greenlet"]
+	path = .\\kettle\\greenlet
+	url = https://github.com/python-greenlet/greenlet.git
