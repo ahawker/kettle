@@ -14,6 +14,7 @@ If possible, all dependencies will be packaged here to form a completely self co
     - make
     - automake
     - libtool
-
+- Greenlet
+    - python-dev
 
 
