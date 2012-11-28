@@ -10,6 +10,9 @@ If possible, all dependencies will be packaged here to form a completely self co
 
 *Unofficial and incomplete list of dependencies...*
 
+- Submodules
+    - git submodule init
+    - git submodule update
 - Libevent
     - make
     - automake
