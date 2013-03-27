@@ -8,16 +8,16 @@ except ImportError:
     from distutils.core import setup
 
 setup(
-    name=crython.__name__,
-    version=crython.__version__,
-    description='Cron scheduling for python functions.',
+    name=kettle.__name__,
+    version=kettle.__version__,
+    description='Kademlia Distributed Hash Table.',
     long_description=open('README.md').read(),
     author='Andrew Hawker',
     author_email='andrew.r.hawker@gmail.com',
-    url='https://github.com/ahawker/crython',
+    url='https://github.com/ahawker/kettle',
     license=open('LICENSE.md').read(),
-    package_dir={'crython': 'crython'},
-    packages=['crython'],
+    package_dir={'kettle': 'kettle'},
+    packages=['kettle'],
     test_suite='tests',
     classifiers=(
         'Development Status :: 4 - Beta',
