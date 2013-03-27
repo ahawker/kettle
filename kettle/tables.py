@@ -1,4 +1,4 @@
-__author__ = 'ahawker'
+__author__ = 'Andrew Hawker <andrew.r.hawker@gmail.com>'
 
 from kettle.dht.kademlia.kbucket import KBucket
 

@@ -1,11 +1,11 @@
+__author__ = 'Andrew Hawker <andrew.r.hawker@gmail.com>'
+
 import json
 import math
 import time
 from kettle.dht.kademlia.client import Client
 from kettle.dht.kademlia.server import Server
 from kettle.dht.kademlia.identifier import unique_identifier
-
-__author__ = 'ahawker'
 
 class Node(object):
     def __init__(self, address='127.0.0.1', port=9090, id=None):
