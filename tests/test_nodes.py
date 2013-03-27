@@ -1,15 +1,10 @@
-__author__ = 'ahawker'
+__author__  = 'Andrew Hawker <andrew.r.hawker@gmail.com>'
 
-from kettle.tests.structures import KettleTest
-from kettle.dht.kademlia.nodes import Node
+from kettle.kettle import Node
+from tests.fixtures import default_node, default_address, default_id, default_port
+import unittest
 
-default_address = '127.0.0.1'
-default_port = 9995
-default_id = 0
-
-default_node = Node(default_address, default_port, default_id)
-
-class TestNode(KettleTest):
+class TestNode(unittest.TestCase):
 
     def setUp(self):
         self.node = default_node
@@ -115,3 +110,6 @@ class TestNode(KettleTest):
         values = [default_address, default_port, default_id]
         self.assertEqual(len(set(keys) - set(json.loads(str(j)).keys())), 0)
         self.assertEqual(len(set(values) - set(json.loads(str(j)).values())), 0)
+
+if __name__ == '__main__':
+    unittest.main()

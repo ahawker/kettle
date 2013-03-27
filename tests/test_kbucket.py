@@ -1,10 +1,10 @@
-__author__ = 'ahawker'
+__author__  = 'Andrew Hawker <andrew.r.hawker@gmail.com>'
 
-from kettle.tests.structures import KettleTest
-from kettle.tests.dht.kademlia.test_nodes import default_node
-from kettle.dht.kademlia.kbucket import KBucket
+from tests.fixtures import default_node
+from kettle.kettle import KBucket
+import unittest
 
-class TestKBucket(KettleTest):
+class TestKBucket(unittest.TestCase):
 
     def setUp(self):
         self.bucket = KBucket()
@@ -122,3 +122,5 @@ class TestKBucket(KettleTest):
         b.add(default_node)
         self.assertTrue(b.is_cache_full)
 
+if __name__ == '__main__':
+    unittest.main()
