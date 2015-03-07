@@ -1,0 +1,1261 @@
+# import asyncio
+#
+# from protocol import Request
+# import json
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# class EchoClient(asyncio.DatagramProtocol):
+#     #message = {'msg': 'This is the message. It will be echoed.'}
+#     message = {
+#         'rpc_id': 12345,
+#         'node_id': 54321,
+#         'func': 'ping',
+#         'args': None,
+#         'kwargs': None,
+#         'address': ('127.0.0.1', 8888)
+#     }
+#     i = 0
+#     t = 0
+#
+#     def connection_made(self, transport):
+#         self.t += 1
+#         self.transport = transport
+#         msg = json.dumps(self.message)
+#         transport.sendto(msg.encode())
+#         print('{}: data sent: {}'.format(self.t, self.message))
+#
+#     def datagram_received(self, data, addr):
+#         print('{}: data received: {} from {} ---- {}'.format(id(self.transport), data.decode(), addr, id(self.transport.get_extra_info('socket'))))
+#         self.i += 1
+#         #self.transport.close()
+#         print('send')
+#         #self.transport.sendto(self.message.encode(), addr)
+#         #self.transport.close()
+#         #self.transport.sendto(self.message.encode(), addr)
+#         #self.transport.sendto(self.message.encode(), addr)
+#         #self.transport.sendto(self.message.encode(), addr)
+#         #
+#         # if self.i % 20 == 0:
+#         #     self.transport.close()
+#         # else:
+#         #     self.transport.sendto(self.message.encode(), addr)
+#
+#     def error_received(self, exc):
+#         print('error recv')
+#         print(exc)
+#         raise exc
+#
+#     def connection_lost(self, exc):
+#         print('client closed the connection {}'.format(id(self.transport.get_extra_info('socket'))))
+#         self.t -= 1
+#
+#         print(locals())
+#         #if self.t == 0:
+#         asyncio.get_event_loop().stop()
+#
+#
+#
+# def callback(future):
+#     print('fucking callback!')
+#     print(future)
+#
+#
+# def main():
+#     @asyncio.coroutine
+#     def inner():
+#         asyncio.sleep(5)
+#         return 43
+#     loop = asyncio.get_event_loop()
+#     print(inner)
+#     print(inner())
+#     print('hjkfadssfdfasdasdfasdfasdf')
+#     xxx = loop.run_until_complete(inner())
+#     print(xxx)
+#     #coro = Request.send('127.0.0.1', 8888, 'bobobo', callback)
+#     #print(coro)
+#     coro = loop.create_datagram_endpoint(EchoClient, remote_addr=('127.0.0.1', 8888))
+#     #coro1 = loop.create_datagram_endpoint(EchoClient, remote_addr=('127.0.0.1', 8888))
+#     #print(coro1)
+#     #coro2 = loop.create_datagram_endpoint(EchoClient, remote_addr=('127.0.0.1', 8888))
+#
+#     xxx = loop.run_until_complete(coro)
+#     print('Fucking doen')
+#     #print(xxx)
+#     #result = asyncio.wait_for(xxx, 5)
+#     print('fuck')
+#     #print(result)
+#     #loop.run_until_complete(coro1)
+#     #loop.run_until_complete(coro2)
+#     loop.run_forever()
+#     print('fucking')
+#     #print(xxx)
+#     loop.close()
+#
+#
+# if __name__ == '__main__':
+#     main()
+
+
+#
+#
+#
+#
+#
+#
+# JSONCodec = None
+#
+# # the local process consists of
+# # a server to receive RPC calls and respond accordingly
+# # ability to ping known clients.
+#
+#
+# # class Protocol(asyncio.DatagramProtocol):
+# #     """
+# #     """
+# #
+# #     codec_cls = JSONCodec
+# #
+# #     def __init__(self):
+# #         self.codec = self.codec_cls()
+# #         self.transport = None
+#
+#
+# # a request requires a connect, a transport.writeto, a yield for response, then return it
+#
+#
+#
+# #n = Node(...)
+# #n.ping(127.0.0.1, 1234, n.ping_response)
+#
+# #n.find_node(127.0.0.1, 1234, n.find_node_response)
+#
+#
+#
+#
+#
+#
+# class Protocol(asyncio.DatagramProtocol):
+#     """
+#     """
+#
+#     # @classmethod
+#     # @asyncio.coroutine
+#     # def send(cls, host, port, data, codec=None, loop=None):
+#     #     request = cls(codec, loop)
+#     #     request.data = data
+#     #     request.future = asyncio.Future()
+#     #     yield from request.connect(host, port)
+#     #     return request.future
+#     #
+#     # @asyncio.coroutine
+#     # def connect(self, host, port):
+#     #     yield from self.loop.create_datagram_endpoint(lambda: self, remote_addr=(host, port))
+#
+#     # @classmethod
+#     # @asyncio.coroutine
+#     # def send(cls, host, port, data, callback, codec=None, loop=None):
+#     #     request = cls(codec, loop)
+#     #     request.data = data
+#     #     request.future = asyncio.Future()
+#     #     request.future.add_done_callback(callback)
+#     #     yield from request.connect(host, port)
+#
+#     # @classmethod
+#     # @asyncio.coroutine
+#     # def send_thing(cls, host, port, data, callback, *args, **kwargs):
+#     #     pass
+#     #     #return cls.send(host, port, data, )
+#
+#     @asyncio.coroutine
+#     def connect(self, host, port):
+#         yield from self.loop.create_datagram_endpoint(lambda: self, remote_addr=(host, port))
+#
+#     @classmethod
+#     @asyncio.coroutine
+#     def ping(cls, host, port, on_send, on_recv):
+#         req = cls()
+#         # connect to host on port
+#         # send it a ping req
+#         # wait for the response
+#         #
+#
+#     def disconnect(self):
+#         self.transport.close()
+#         self.loop.stop()
+#         #pass
+#         #yield from
+#
+#     def __init__(self, codec=None, loop=None, log=None):
+#         self.codec = codec or JSONCodec
+#         self.loop = loop or asyncio.get_event_loop()
+#         self.log = log or None
+#         self.transport = None
+#         self.name = None
+#         self.peer = None
+#         self.error_count = 0
+#         self.callbacks = {}
+#
+#     def send(self, host, port, data, callback):
+#         pass
+#
+#     def send_datagram(self, data, addr=None):
+#         #data = self.codec.encode(data)
+#         data = data.encode()
+#         self.transport.sendto(data, addr)
+#
+#     def connection_made(self, transport):
+#         self.transport = transport
+#         self.name = transport.get_extra_info('sockname')
+#         self.peer = transport.get_extra_info('peername')
+#         self.on_connect(transport)
+#
+#     def connection_lost(self, exc):
+#         self.transport = None
+#         self.name = None
+#         self.peer = None
+#         self.error_count = 0
+#         self.on_disconnect(exc)
+#
+#     def datagram_received(self, data, addr):
+#         #data = self.codec.decode(data)
+#         self.on_datagram(data, addr)
+#
+#     def error_received(self, exc):
+#         self.error_count += 1
+#         self.on_error(exc)
+#
+#     def add_connect_callback(self, callback):
+#         self._add_callback('on_connect', callback)
+#
+#     def add_disconnect_callback(self, callback):
+#         self._add_callback('on_disconnect', callback)
+#
+#     def add_datagram_callback(self, callback):
+#         self._add_callback('on_datagram', callback)
+#
+#     def add_error_callback(self, callback):
+#         self._add_callback('on_error', callback)
+#
+#     def _add_callback(self, key, callback):
+#         if not key:
+#             raise ValueError('Invalid callback key {0}'.format(key))
+#         if not callable(callback):
+#             raise ValueError('Invalid callback; must be callable')
+#         self.callbacks.setdefault(key, []).append(callback)
+#
+#     def _schedule_callback(self, key, *args):
+#         callbacks = self.callbacks.get(key)
+#         if not callbacks:
+#             return
+#
+#         callbacks = callbacks[:]
+#         for callback in callbacks:
+#             self.loop.call_soon(callback, *args)
+#
+#     def on_connect(self, transport):
+#         self._schedule_callback('on_connect', transport)
+#
+#     def on_disconnect(self, exc):
+#         self._schedule_callback('on_disconnect', exc)
+#         #self.node.on_disconnect(exc)
+#
+#     def on_datagram(self, data, addr):
+#         self._schedule_callback('on_datagram', data, addr)
+#         #self.node.on_datagram(data, addr)
+#
+#     def on_error(self, exc):
+#         self._schedule_callback('on_error', exc)
+#         #self.node.on_error(exc)
+#
+#
+# class Node(object):
+#     """
+#     """
+#
+#     def __init__(self, codec=None, loop=None, log=None):
+#         self.protocol = Protocol(codec, loop, log)
+#         self.protocol.add_connect_callback(self.on_connect)
+#         self.protocol.add_disconnect_callback(self.on_disconnect)
+#         self.protocol.add_datagram_callback(self.on_datagram)
+#         self.protocol.add_error_callback(self.on_error)
+#         #self.protocol.on_connect_callback(self.on_connect)
+#
+#
+#     def on_connect(self, transport):
+#         """
+#         """
+#
+#     def on_disconnect(self, exc):
+#         pass
+#
+#     def on_datagram(self, data, addr):
+#         pass
+#
+#     def on_error(self, exc):
+#         pass
+#
+#
+# class Request(asyncio.DatagramProtocol):
+#     """
+#     """
+#
+#     def __init__(self, codec=None, loop=None, log=None):
+#         self.codec = codec or JSONCodec
+#         self.loop = loop or asyncio.get_event_loop()
+#         self.log = log or None
+#         self.transport = None
+#         self.name = None
+#         self.peer = None
+#         self.error_count = 0
+#         self.callbacks = {}
+#
+#
+# class FindNode(Request):
+#     """
+#     """
+#
+#     def on_connect(self, transport):
+#         transport.sendto(self.data)
+#
+#     def on_datagram(self, data, addr):
+#         self.future.set_result()
+#
+# class Response(asyncio.DatagramProtocol):
+#     pass
+#
+#
+# # class Message(Protocol):
+# #     """
+# #     """
+# #
+# #
+# # class Request(Protocol):
+# #     """
+# #     """
+# #
+# #     def on_connect(self, transport):
+# #         print('on c')
+# #         print('sending...{}'.format(self.data))
+# #         self.send_datagram(self.data)
+# #
+# #     def on_disconnect(self, exc):
+# #         print('on dc')
+# #         print(exc)
+# #         if exc:
+# #             self.future.set_exception(exc)
+# #         print(self.future)
+# #
+# #     def on_datagram(self, data, addr):
+# #         print('on dg')
+# #         print(data)
+# #         print(addr)
+# #         self.future.set_result((data, addr))
+# #         self.disconnect()
+# #         print('done')
+# #
+# #     def on_error(self, exc):
+# #         print('on e')
+# #         print(exc)
+# #         if exc:
+# #             self.future.set_exception(exc)
+#
+#
+# # a request is sending some data and getting back some data
+# # a request requires transport.sendto and waiting for datagram recv
+# # a response is receiving a request and returning some data
+# # a response requires datagram recv, processing and transport.sendto
+# # ping example
+# # we need to connect to a host:port
+# # once we connect, we need to send ping packet
+# # we then need to wait for some amount of time for a response
+# # if we dont get a response, we increment a num failurs
+# # if we do get a response, we process it as such
+# #
+# #
+# # class Client(asyncio.DatagramProtocol):
+# #     """
+# #     """
+# #
+# #     transport_info = ('sockname', 'peername')
+# #
+# #     def __init__(self, codec):
+# #         self.codec = codec
+# #         self.transport = None
+# #         self.sockname = None
+# #         self.peername = None
+# #
+# #     def connection_made(self, transport):
+# #         self.transport = transport
+# #         self.sockname = transport.get_extra_info.get('sockname')
+# #         self.peername = transport.get_extra_info.get('peername')
+# #         self.on_connect(self.sockname, self.peername, self.transport)
+# #
+# #     def connection_lost(self, exc):
+# #         self.transport = None
+# #         self.sockname = None
+# #         self.peername = None
+# #         self.on_disconnect(exc)
+# #
+# #     def datagram_received(self, data, addr):
+# #         data = self.codec.decode(data)
+# #         self.on_data(data, addr)
+# #
+# #     def error_received(self, exc):
+# #         self.on_error(exc)
+# #
+# #
+# # class Server(asyncio.DatagramProtocol):
+# #     """
+# #     """
+# #
+# #     transport_info = ('socketname', 'peername')
+# #
+# #     def __init__(self, connection):
+# #         self.node = connection
+# #         self.codec = connection.codec
+# #         self.transport = None
+# #
+# #     def connection_made(self, transport):
+# #         self.transport = transport
+# #         self.node.on_connect(transport)
+# #
+# #     def connection_lost(self, exc):
+# #         self.transport = None
+# #         self.node.on_disconnect(exc)
+# #
+# #     def datagram_received(self, data, addr):
+# #         data = self.codec.decode(data)
+# #         self.node.on_datagram(data, addr)
+# #
+# #     def error_received(self, exc):
+# #         self.node.on_error(exc)
+#
+#
+# # class Protocol(asyncio.DatagramProtocol):
+# #     """
+# #     """
+# #
+# #     transport_info = ('socketname', 'peername')
+# #
+# #     def __init__(self, connection):
+# #         self.node = connection
+# #         self.codec = connection.codec
+# #         self.transport = None
+# #
+# #     def connection_made(self, transport):
+# #         self.transport = transport
+# #         self.node.on_connect(transport)
+# #
+# #     def connection_lost(self, exc):
+# #         self.transport = None
+# #         self.node.on_disconnect(exc)
+# #
+# #     def datagram_received(self, data, addr):
+# #         data = self.codec.decode(data)
+# #         self.node.on_datagram(data, addr)
+# #
+# #     def error_received(self, exc):
+# #         self.node.on_error(exc)
+#
+#
+# # class Protocol(asyncio.DatagramProtocol):
+# #     """
+# #
+# #     """
+# #
+# #     transport_info = ('socketname', 'peername')
+# #
+# #     def __init__(self, node, loop=None, log=None):
+# #         self.node = node
+# #         #self.loop = loop or asyncio.get_event_loop()
+# #         #self.log = log or LOG
+# #         self.transport = None
+# #         self.sockname = None
+# #         self.peername = None
+# #
+# #     def connection_made(self, transport):
+# #         """
+# #         """
+# #         self.connection.on_connect(transport)
+# #         #self.transport = transport
+# #         #self.sockname, self.peername = (transport.get(k) for k in self.transport_info)
+# #         #self.node.log.info('[{0}] Connected to {1}'.format(self.socketname, self.peername))
+# #
+# #     def connection_lost(self, exc):
+# #         """
+# #         """
+# #         self.connection.on_disconnect(exc)
+# #         #if exc:
+# #         #    self.node.log.error('[{0}] Connection lost: {1}'.format(self.sockname, exc))
+# #
+# #     def datagram_received(self, data, addr):
+# #         """
+# #         """
+# #         self.connection.on_datagram(data, addr)
+# #
+# #     def error_received(self, exc):
+# #         """
+# #         """
+# #         self.connection.on_error(exc)
+#
+#
+# # class Server(asyncio.DatagramProtocol):
+# #     """
+# #
+# #     """
+# #
+# #     def __init__(self, loop=None):
+# #         self.loop = loop or asyncio.get_event_loop()
+# #         self.transport = None
+# #
+# #     def connection_made(self, transport):
+# #         """
+# #         """
+# #         self.transport = transport
+# #
+# #     def connection_lost(self, exc):
+# #         """
+# #         """
+# #
+# #     def datagram_received(self, data, addr):
+# #         """
+# #         """
+# #
+# #     def error_received(self, exc):
+# #         """
+# #         """
+
+
+    #
+    # #:
+    # inbound_message_factory = Request
+    #
+    # #:
+    # outbound_message_factory = Response
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.exports = get_exports(self.endpoint)
+    #
+    # @asyncio.coroutine
+    # def on_connect(self, transport):
+    #     """
+    #     """
+    #     LOG.error('Connected to local transport at {0}:{1}'.format(*self.name))
+    #
+    # @asyncio.coroutine
+    # def on_disconnect(self, exc):
+    #     """
+    #     """
+    #     LOG.error('FUUUUUU')
+    #
+    # @asyncio.coroutine
+    # def on_message(self, message, address):
+    #     """
+    #     """
+    #     try:
+    #         handler = self.exports[message.func]
+    #     except KeyError as e:
+    #         LOG.error('Invalid RPC request: {0} from {1}:{2}'.format(e, *address))
+    #     else:
+    #         addr, response = yield from handler(message, self.outbound_message_factory)
+    #         LOG.error('Sending response {0} to {1}'.format(response, addr))
+    #         self.send(response, addr)
+    #
+    # @asyncio.coroutine
+    # def on_error(self, exc):
+    #     """
+    #     """
+    #     LOG.error('FUUUU')
+
+
+
+
+
+
+
+    # def send_request(self, request, address, timeout=None):
+    #     """
+    #     """
+    #     # ...
+    #     timeout = timeout or self.default_timeout
+    #     future = self.futures[request.rpc_id] = asyncio.Future(loop=self.loop)
+    #
+    #     self.loop.call_later(timeout, self.on_send_request_timeout, request.rpc_id)
+    #
+    #     self.send(request, address)
+    #     return future
+
+
+# def export(rpc):
+#     """
+#
+#     """
+#     def decorator(func):
+#         @functools.wraps(func)
+#         def wrapper(self, request, response_factory):
+#             """
+#             """
+#             success, result = False, None
+#             try:
+#                 result = yield from func(self, *request.args, **request.kwargs)
+#                 success = True
+#             except Exception:
+#                 LOG.exception('Handler {0} raised unhandled exception'.format(rpc.name, func.__name__))
+#                 result = 'RPC {0} failed'.format(rpc.name)
+#                 success = False
+#             finally:
+#                 return ('192.168.1.111', 8888), response_factory(self.address, request.rpc_id, request.node_id, success, result)
+#
+#         wrapper.__export__ = rpc
+#         return wrapper
+#     return decorator
+#
+# route = export
+
+
+
+#
+#
+# def get_exports(endpoint):
+#     """
+#     """
+#     return dict(((e.__export__.name, e)
+#                  for e in (getattr(endpoint, f)
+#                            for f in endpoint.__class__.__dict__) if hasattr(e, '__export__')))
+
+#
+# def get_handlers(endpoint):
+#     """
+#     """
+#     return dict(((e.__handler__.name, e)
+#                  for e in (getattr(endpoint, f)
+#                            for f in endpoint.__dict__) if hasattr(e, '__handler__')))
+
+
+#get_remotes = get_exports
+#get_msgs = get_exports
+
+
+#
+# def get_remotes(endpoint):
+#     """
+#
+#     """
+#     return dict(((r.__remote__.name, r)
+#                  for r in (getattr(endpoint, f)
+#                            for f in endpoint.__class__.__dict__) if hasattr(r, '__remote__')))
+#
+#
+
+# def get_remotes2(endpoint):
+#     """
+#
+#     """
+#     return dict(((r.__remote__.__name__, r)
+#                  for r in (getattr(endpoint, f)
+#                            for f in endpoint.__class__.__dict__) if hasattr(r, '__remote__')))
+
+
+# class RPC(enum.Enum):
+#     """
+#
+#     """
+#
+#     ping = 1
+#     store = 2
+#     find_node = 3
+#     find_value = 4
+
+
+
+
+# def remote(rpc):
+#     """
+#
+#     """
+#     def decorator(func):
+#         @functools.wraps(func)
+#         def wrapper(self, *args, **kwargs):
+#             """
+#             """
+#             request = dict(
+#                 type=MessageType.request.name,
+#                 rpc_id=generate_id(),
+#                 node_id=self.id, #WRONG
+#                 rpc=func.__name__,
+#                 payload=args,
+#                 #data=(rpc.name, args),
+#                 #func=rpc.name,
+#                 #args=args,
+#                 #kwargs=kwargs,
+#                 address=self.address #WRONG
+#             )
+#             response = yield from self.connection.send(request, self.address)
+#             return response
+#
+#         #wrapper.__remote__ = rpc
+#         wrapper.__remote__ = func
+#         return wrapper
+#     return decorator
+
+
+    # #:
+    # inbound_message_factory = Message
+    #
+    # #:
+    # outbound_message_factory = Message
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.remotes = get_remotes2(self.endpoint)
+    #     self.futures = {}
+    #
+    # @asyncio.coroutine
+    # def on_connect(self, transport):
+    #     """
+    #     """
+    #     LOG.error('Connected to remote transport at {0}:{1}'.format(*self.peer))
+    #
+    # @asyncio.coroutine
+    # def on_disconnect(self, exc):
+    #     """
+    #     """
+    #     # Cancel any pending request futures.
+    #     for f in self.futures:
+    #         if not f.cancelled():
+    #             f.set_exception(exc)
+    #
+    # @asyncio.coroutine
+    # def on_message(self, message, address):
+    #     """
+    #     """
+    #     try:
+    #         future = self.futures[message.rpc_id]
+    #     except KeyError:
+    #         LOG.error('Invalid incoming message id: {0} from {1}:{2}'.format(message.rpc_id, *address))
+    #     else:
+    #         if not future.cancelled():
+    #             future.set_result(message)
+    #
+    # @asyncio.coroutine
+    # def on_error(self, exc):
+    #     """
+    #     """
+    #     # ..
+    #
+    # @asyncio.coroutine
+    # def send(self, message, address):
+    #     """
+    #     """
+    #     try:
+    #         rpc_id = message['rpc_id']
+    #     except KeyError:
+    #         LOG.error("Invalid outgoing message format: missing 'rpc_id'")
+    #     else:
+    #         future = self.futures[rpc_id] = asyncio.Future(loop=self.loop)
+    #         super().send(message, address)
+    #         response = yield from future
+    #         return response
+
+
+
+
+# class Protocol(asyncio.DatagramProtocol):
+#     """
+#     """
+#
+#     #:
+#     codec_factory = JSONCodec
+#
+#     #:
+#     inbound_message_factory = None
+#
+#     #:
+#     outbound_message_factory = None
+#
+#     def __init__(self, endpoint=None, loop=None):
+#         self.endpoint = endpoint
+#         self.loop = loop
+#         self.codec = self.codec_factory()
+#         self.transport = None
+#         self.name = None
+#         self.peer = None
+#         self.error_count = 0
+#
+#     def connection_made(self, transport):
+#         """
+#         """
+#         self.transport = transport
+#         self.name = transport.get_extra_info('sockname')
+#         self.peer = transport.get_extra_info('peername')
+#         self.loop.create_task(self.on_connect(transport))
+#
+#     def connection_lost(self, exc):
+#         """
+#         """
+#         self.transport = None
+#         self.name = None
+#         self.peer = None
+#         self.error_count = 0
+#         self.loop.create_task(self.on_disconnect(exc))
+#
+#     def datagram_received(self, data, addr):
+#         """
+#         """
+#         LOG.error('Datagram received from {0}:{1}'.format(*addr))
+#         try:
+#             data = self.codec.decode(data)
+#             LOG.error('Datagram: {0}'.format(data))
+#         except CodecError as e:
+#             LOG.error('Invalid incoming data encoding: {0} from {1}:{2}'.format(e, *addr))
+#         else:
+#             try:
+#                 message = self.inbound_message_factory.decode(**data)
+#             except MessageFormatError as e:
+#                 LOG.error('Invalid incoming message: {0} from {1}:{2}'.format(e, *addr))
+#             else:
+#                 self.loop.create_task(self.on_message(message, addr))
+#
+#     def error_received(self, exc):
+#         """
+#         """
+#         self.error_count += 1
+#         self.loop.create_task(self.on_error(exc))
+#
+#     #@asyncio.coroutine
+#     def send(self, message, address):
+#         """
+#         """
+#         if self.transport:
+#             try:
+#                 message = self.outbound_message_factory.encode(message)
+#             except MessageFormatError as e:
+#                 LOG.error('Invalid outgoing message data: {0} to {1}:{2}'.format(e, *(address or self.peer)))
+#             else:
+#                 try:
+#                     data = self.codec.encode(message)
+#                 except CodecError as e:
+#                     LOG.error('Invalid outgoing data encoding: {0} to {1}:{2}'.format(e, *address))
+#                 else:
+#                     self.transport.sendto(data, address)
+#
+#     def close(self):
+#         """
+#         """
+#         if self.transport:
+#             self.transport.close()
+#
+#     @asyncio.coroutine
+#     def on_connect(self, transport):
+#         pass
+#
+#     @asyncio.coroutine
+#     def on_disconnect(self, exc):
+#         pass
+#
+#     @asyncio.coroutine
+#     def on_message(self, message, address):
+#         pass
+#
+#     @asyncio.coroutine
+#     def on_error(self, exc):
+#         pass
+
+
+
+# """
+#     kettle.dht
+#     ~~~~~~~~~~
+#
+#     ...
+# """
+#
+# import asyncio
+# import collections
+#
+#
+# class DHT(collections.MutableMapping):
+#     """
+#
+#     """
+#
+#     def __init__(self):
+#         self.node = None
+#
+#     # provide dict like access as well?
+#
+#     @asyncio.coroutine
+#     def get(self, key, default=None):
+#         """
+#         """
+#         value = yield from self.node.find_value(key, default)
+#         return value
+#
+#     @asyncio.coroutine
+#     def put(self, key, value):
+#         """
+#         """
+#         yield from self.node.store(key, value)
+
+
+#
+# class PeerContextManager:
+#
+#     def __init__(self, node, address):
+#         self.node = node
+#         self.address = address
+#
+#     def __enter__(self):
+#         pass
+#
+#     def __exit__(self, exc_type, exc_val, exc_tb):
+#         self.node = None
+#         self.address = None
+#
+#     @asyncio.coroutine
+#     def ping(self):
+#         print('PEEEEERRRR PING CALLLED OOOLOLOLOLOL!!!!!')
+#         xxx = yield from self.node.ping(self.address)
+#         print('PPEERR PING RETUNRED!@!@!@!@!@')
+#         print(xxx)
+#         return xxx
+#
+#
+
+
+
+
+#
+# def create_logger():
+#     """
+#
+#     """
+#     class NodeLogger(logging.getLoggerClass()):
+#         """
+#         """
+#
+#         @classmethod
+#         def file_descriptors(cls):
+#             """
+#             Helper function which returns all file descriptors currently opened by the logging
+#             subsystem.
+#             """
+#             file_handlers = (h for h in logging._handlerList if isinstance(h, logging.FileHandler))
+#             return [handler.stream.fileno() for handler in file_handlers]
+#
+#         @staticmethod
+#         def shutdown():
+#             """
+#             Helper function which exposes the ability to shutdown the logging subsystem from
+#             every instance of the logger.
+#             """
+#             logging.shutdown()
+#
+#         def makeRecord(self, name, level, fn, lno, msg, args, exc_info, func=None, extra=None, sinfo=None):
+#             """
+#             Modify the standard :class: `~logging.LogRecord` creation to automatically inject
+#             node specific context into the `extras` field.
+#             """
+#             if extra is None:
+#                 extra = {}
+#
+#             extra['node_id'] = node.id
+#             extra['node_address'] = '{}:{}'.format(*node.address)
+#
+#             return super(NodeLogger, self).makeRecord(name, level, fn, lno, msg, args, exc_info, func, extra, sinfo)
+#
+#         def child(self, obj):
+#             """
+#             Return a :class: `~kettle.log.NodeLogger` instance attached as a child
+#             to this logger keyed by tag.
+#             """
+#             child = super(NodeLogger, self).getChild(resolve_type(obj))
+#             child.__class__ = NodeLogger
+#             child.propagate = True
+#             return child
+#
+#     # Create formatter to contain node specific context.
+#     handler = logging.StreamHandler()
+#     formatter = logging.Formatter('%(asctime)s - %(process)s - %(thread)s - %(levelname)s - '
+#                                   '%(node_id)s - %(node_address)s - %(message)s')
+#     handler.setFormatter(formatter)
+#
+#     # Configure root logger.
+#     logger = logging.getLogger(str(node.id))
+#     logger.__class__ = NodeLogger
+#     logger.addHandler(handler)
+#     logger.setLevel(DEFAULT_LOG_LEVEL)
+#
+#     return logger
+#
+#
+# LOG = create_logger()
+
+
+
+
+
+# DEFAULT_LOG_LEVEL = logging.INFO
+#
+#
+# LOG = logging.getLogger(__package__)
+#
+
+#
+# class FormatDispatcher:
+#     """
+#
+#     """
+#
+#     def __init__(self, formatters):
+#         self.formatters = formatters
+#
+#     def format(self, record):
+#         return self.formatters.get(record.name)
+#
+
+
+
+
+# class Request(Message):
+#     """
+#     """
+#
+#     __slots__ = Message.__slots__ + ('func', 'args', 'kwargs')
+#
+#     def __init__(self, type, address, rpc_id, node_id, func, args, kwargs):
+#         super().__init__(type, address, rpc_id, node_id)
+#         self.func = func
+#         self.args = args or ()
+#         self.kwargs = kwargs or {}
+#
+#     def __repr__(self):
+#         return '<{0}(address={1}, rpc_id={2}, node_id={3}, func={4})>'.format(self.__class__.__name__, self.address,
+#                                                                               self.rpc_id, self.node_id, self.func)
+#
+#     def to_response(self, node_id, result):
+#         """
+#         """
+#         return Response(MessageType.response, self.address, self.rpc_id, node_id, result)
+#
+#
+# class Response(Message):
+#     """
+#     """
+#
+#     __slots__ = Message.__slots__ + ('result',)
+#
+#     #TODO: Add helper func to create from exc object (connection_lost callback)
+#
+#     def __init__(self, type, address, rpc_id, node_id, result):
+#         super().__init__(type, address, rpc_id, node_id)
+#         self.result = result
+#
+#     def __repr__(self):
+#         return '<{0}(address={1}, rpc_id={2}, node_id={3}>'.format(self.__class__.__name__, self.address,
+#                                                                    self.rpc_id, self.node_id)
+
+
+
+
+
+
+#
+#
+# server = Server('....')
+# server.listen()
+#
+# server.ping('...')
+# server.set('key', 'val')
+# server.get('key')
+# server.find_node('...')
+#
+#
+#
+#
+
+# import hashlib
+# import json
+# import math
+# import random
+# import time
+#
+
+# def uid():
+#     return int(hashlib.sha1(str(random.getrandbits(160))).hexdigest(), 16)
+#
+#
+# class DHT(object):
+#     """
+#
+#     """
+#
+#     # encapsulate transport and protocol
+#
+#
+# class Node(object):
+#     def __init__(self, address=None, port=None, node_id=None):
+#         self.address = address or '127.0.0.1'
+#         self.port = port or 9090
+#         self.id = node_id or uid()
+#         #self.codec = None
+#
+#     def __repr__(self):
+#         return '<Node: ({0}:{1}) {2}>'.format(self.address, self.port, self.id)
+#
+#     def __str__(self):
+#         return '{0}:{1}'.format(self.address, self.port)
+#
+#     def __lt__(self, other):
+#         if isinstance(other, Node):
+#             return self.id < other.id
+#         return self.id < other
+#
+#     def __le__(self, other):
+#         if isinstance(other, Node):
+#             return self.id <= other.id
+#         return self.id <= other
+#
+#     def __gt__(self, other):
+#         if isinstance(other, Node):
+#             return self.id > other.id
+#         return self.id > other
+#
+#     def __ge__(self, other):
+#         if isinstance(other, Node):
+#             return self.id >= other.id
+#         return self.id >= other
+#
+#     def __eq__(self, other):
+#         if isinstance(other, Node):
+#             return self.id == other.id
+#         return self.id == other
+#
+#     def __ne__(self, other):
+#         if isinstance(other, Node):
+#             return self.id != other.id
+#         return self.id != other
+#
+#     def __cmp__(self, other):
+#         if isinstance(other, Node):
+#             return cmp(self.id, other.id)
+#         return cmp(self.id, other)
+#
+#     def __xor__(self, other):
+#         if isinstance(other, Node):
+#             return self.id ^ other.id
+#         return self.id ^ other
+#
+#     def __hash__(self):
+#         return self.id
+#
+#     def distance(self, other):
+#         return self ^ other
+#
+#     def get_distance_bit(self, other):
+#         distance = self.distance(other)
+#         if distance < 0:
+#             raise ValueError('Node distance must be non-negative.')
+#         if not distance:
+#             return None
+#         return int(math.log(distance, 2))
+#
+#     def to_dict(self):
+#         return {'id': self.id, 'address': self.address, 'port': self.port}
+#
+#     # def to_json(self):
+#     #     return json.dumps(self.to_dict())
+#
+#     def to_tuple(self):
+#         return self.id, self.address, self.port
+#
+#
+# class LocalNode(Node):
+#     def __init__(self, *args, **kwargs):
+#         super(LocalNode, self).__init__(*args, **kwargs)
+#
+#
+# class RemoteNode(Node):
+#     def __init__(self, *args, **kwargs):
+#         super(RemoteNode, self).__init__(*args, **kwargs)
+#         self.last_seen = time.time()
+#         self.failures = 0
+#
+#     def is_responsive(self):
+#         return self.failures <= 5
+
+
+
+
+
+
+            #xxx = loop.run_until_complete(node.ping(('127.0.0.1', 8889)))
+            #print('after store')
+            #print(xxx)
+
+
+        # with node.peer('127.0.0.1', 8889) as p:
+        #     #xxx = loop.run_until_complete(p.ping())
+        #     xxx = yield from p.ping()
+        #     print('DOO')
+        #     print(xxx)
+        #
+
+        #print('after ping')
+        #print(xxx)
+        #node = Node('192.168.1.111', 8888, loop=loop)
+        #node.run()
+        #node.connect()
+        #node.run_forever()
+        # node.connect()
+        #
+        #
+        # print('aft')
+        # print(node.address)
+        # node.disconnect()
+        #with Node('127.0.1.1', 8888, loop=loop) as n:
+        #    print('NODEEEEE')
+        #    print(n)
+        #    loop.run_forever()
+        #    print('after run_forever')
+        #    print(n)
+
+
+
+
+#
+# def main():
+#
+#     try:
+#         loop = get_event_loop()
+#
+#         peer = Peer(('127.0.0.1', 8888), loop=loop)
+#         print(peer.id)
+#         #with (yield from Peer('127.0.0.1', 8888, loop=loop)) as peer:
+#         peer.connect()
+#         #loop.run_until_complete(peer.connect())
+#         LOG.error('post connect')
+#         LOG.error(loop.is_running())
+#         #LOG.error(str(xxx))
+#         xxx=loop.create_task(peer.store())
+#         #xxx = yield from peer.ping()
+#         LOG.error('ping result')
+#         LOG.error(xxx)
+#         #loop.create_task(peer.store())
+#         yyy = peer.store()
+#
+#
+#        # yield from inner()
+#         LOG.error('post ping')
+#         loop.run_forever()
+#     finally:
+#         print('finally done!!!!!!')
+
