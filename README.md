@@ -1,23 +1,31 @@
-#Kettle
+Kettle
+======
 
-Kettle is a standbox for playing around with distributed hash tables (DHT).
+Kettle is an implementation of the Kademlia DHT written in Python using asyncio.
 
-##Build
 
-If possible, all dependencies will be packaged here to form a completely self contained repository. See: build.sh
+## Status
 
-###Build Dependencies
+Work-in-progress.
 
-*Unofficial and incomplete list of dependencies...*
+Not suitable for children under 3.
 
-- Submodules
-    - git submodule init
-    - git submodule update
-- Libevent
-    - make
-    - automake
-    - libtool
-- Greenlet
-    - python-dev
 
+## Usage
+
+    from kettle import Node, get_event_loop
+
+    # Synchronous.
+    node = Node(('127.0.0.1', 8800), loop=get_event_loop())
+    node.run_forever()
+
+    # Asynchronous.
+    node = Node(('127.0.0.1', 8888), loop=get_event_loop())
+    node.listen()
+
+    # Poke another node.
+    node.ping(('1.2.3.4', 8080))
+
+    # Store your bytes.
+    node.store(('1.2.3.4', 8080), 'Be sure to drink your Round-tine')
 
