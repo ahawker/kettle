@@ -4,7 +4,7 @@
 
     Contains Kettle logging.
 """
-__all__ = ['LOG']
+__all__ = ['LOGGER']
 
 
 import logging
@@ -29,7 +29,6 @@ def create_logger(name=None):
             """
             child = super(KettleLogger, self).getChild(resolve_type(obj))
             child.__class__ = KettleLogger
-            child.propagate = True
             return child
 
     # Configure new Kettle logger.
@@ -38,4 +37,4 @@ def create_logger(name=None):
     return logger
 
 
-LOG = create_logger(__package__)
+LOGGER = create_logger()

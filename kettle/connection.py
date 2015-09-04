@@ -9,7 +9,7 @@ __all__ = ['Connection', 'ClientConnection', 'ServerConnection', 'Endpoint']
 
 import asyncio
 
-from kettle.log import LOG
+from kettle.log import LOGGER
 from kettle.protocol import ClientProtocol, ServerProtocol
 
 
@@ -24,7 +24,7 @@ class Connection:
         self.address = address
         self.loop = loop
         self.protocol = None
-        self.logger = LOG.child(self)
+        self.logger = LOGGER.child(self)
 
     def __repr__(self):
         return '<{}(address={}, protocol={})>'.format(self.__class__.__name__, self.address,
@@ -98,7 +98,7 @@ class Endpoint:
     def __init__(self, address, loop=None):
         self.connection = self.connection_factory(address, loop)
         self.loop = loop
-        self.logger = LOG.child(self)
+        self.logger = LOGGER.child(self)
 
     def __repr__(self):
         return '<{}(connection={})>'.format(self.__class__.__name__, self.connection)
