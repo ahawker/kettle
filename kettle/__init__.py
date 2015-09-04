@@ -29,7 +29,6 @@ def get_event_loop():
     for versions < 3.4.2.
     """
     import asyncio
-    import signal
     import types
 
     loop = asyncio.get_event_loop()
